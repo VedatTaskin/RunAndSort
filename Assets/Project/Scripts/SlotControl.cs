@@ -3,15 +3,29 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
-public class SlotControl : MonoBehaviour, IDropHandler
+public class SlotControl : MonoBehaviour, IDropHandler, IPointerEnterHandler, IPointerExitHandler
 {
+
+    
     public void OnDrop(PointerEventData eventData)
     {
         print("On Drop");
-        if (eventData.pointerDrag != null)
+
+        Draggable draggable = eventData.pointerDrag.GetComponent<Draggable>();
+
+        if (draggable != null)
         {
-            eventData.pointerDrag.GetComponent<RectTransform>().position = 
-                GetComponent<RectTransform>().position;
+            draggable.slotTransform = this.transform;
         }        
+    }
+
+    public void OnPointerEnter(PointerEventData eventData)
+    {
+        //print("On Pointer Enter"); ;
+    }
+
+    public void OnPointerExit(PointerEventData eventData)
+    {
+        //print("On Pointer Exit");
     }
 }
