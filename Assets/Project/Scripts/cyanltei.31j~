@@ -36,27 +36,23 @@ public class SlotControl : MonoBehaviour, IDropHandler
 
     public void CheckImagesOrder()
     {
-        int index = 1;
         int correctImagesCount = 0;
 
         for (int i = 0; i < transform.childCount; i++)
         {
-            if (transform.GetChild(i).gameObject.activeInHierarchy)
+            if (int.Parse(transform.GetChild(i).name) <= i)
             {
-                print(int.Parse(transform.GetChild(i).name));
-                if (int.Parse(transform.GetChild(i).name) ==index)
+                correctImagesCount++;
+                if (correctImagesCount ==ImagesGO.Count)
                 {
-                    correctImagesCount++;
-                    index++;
-                    if (correctImagesCount == ImagesGO.Count )
-                    {
-                        // oyun bitti
-                        print("hepsi sýralandý");
-                    }
+                    // oyun bitti
+                    print("hepsi sýralandý");
                 }
-
-            } 
-
+            }
+            else
+            {
+                break;
+            }
         }
     }
 

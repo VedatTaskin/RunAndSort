@@ -12,8 +12,8 @@ public class Draggable : MonoBehaviour, IBeginDragHandler,IEndDragHandler,IDragH
     public GameObject placeHolder;
     RectTransform rectTransform;
     CanvasGroup canvasGroup;
+   
     
-
 
     private void Awake()
     {
@@ -23,7 +23,7 @@ public class Draggable : MonoBehaviour, IBeginDragHandler,IEndDragHandler,IDragH
 
     public void OnBeginDrag(PointerEventData eventData)
     {
-        print("On Begin Drag");
+        //print("On Begin Drag");
         placeHolder.SetActive(true);
         placeHolder.transform.SetSiblingIndex(this.transform.GetSiblingIndex());
         canvasGroup.blocksRaycasts = false;
@@ -31,11 +31,32 @@ public class Draggable : MonoBehaviour, IBeginDragHandler,IEndDragHandler,IDragH
         this.transform.SetParent(this.transform.root);
     }
 
-
     public void OnDrag(PointerEventData eventData)
     {
-        print("On Drag");
+       // print("On Drag");
         rectTransform.anchoredPosition += eventData.delta;
+
+
+        int newSiblingIndex = slotTransform.childCount;
+
+
+        for (int i = 0; i < slotTransform.childCount; i++)
+        {
+            if (transform.position.x < slotTransform.GetChild(i).position.x)
+            {
+                newSiblingIndex = i;
+
+                if (placeHolder.transform.GetSiblingIndex() < newSiblingIndex)
+                {
+                    newSiblingIndex--;
+                }
+
+                break;
+            }
+        }
+
+        placeHolder.transform.SetSiblingIndex(newSiblingIndex);
+
     }
 
     public void OnEndDrag(PointerEventData eventData)
@@ -46,5 +67,10 @@ public class Draggable : MonoBehaviour, IBeginDragHandler,IEndDragHandler,IDragH
         this.transform.SetParent(slotTransform);
         this.transform.SetSiblingIndex(placeHolder.transform.GetSiblingIndex());
         placeHolder.SetActive(false);
+
+        slotTransform.GetComponent<SlotControl>().CheckImagesOrder();  
+        
     }
+
+
 }
