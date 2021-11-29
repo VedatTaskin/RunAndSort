@@ -3,15 +3,23 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
+using UnityEngine.UI;
 
 public class SlotControl : MonoBehaviour, IDropHandler
 {
     List<GameObject> ImagesGO = new List<GameObject>();
+    public Text resultText;
+    public Text timerText;
+    bool IsMissionAccomplished;
+    [SerializeField] private int timer=10;
+
+
 
     private void Awake()
     {
         TakeImageList();
         ShuffleChildImages();
+        InvokeRepeating("Timer", 1, 1);
     }
 
     private void ShuffleChildImages()
@@ -51,9 +59,7 @@ public class SlotControl : MonoBehaviour, IDropHandler
                     index++;
                     if (correctImagesCount == ImagesGO.Count )
                     {
-                        // oyun bitti
-                        print("hepsi sýralandý");
-                        EventManager.sortingIsTrue?.Invoke();
+                        ImagesSorted();
                     }
                 }
 
@@ -67,6 +73,33 @@ public class SlotControl : MonoBehaviour, IDropHandler
         print("On Drop");      
     }
 
+    void ImagesSorted()
+    {
+        // oyun bitti
+        IsMissionAccomplished = true;
+        EventManager.sortingIsTrue?.Invoke();
+        GetComponent<Image>().color = Color.green; // Change slot color to green
+        resultText.gameObject.SetActive(true);
+        resultText.text = "EXCELLENT";
+        CancelInvoke("Timer");
+    }
 
+    void Timer()
+    {
+        timer--;
+        timerText.text = timer.ToString();
+        if (timer <=0 && !IsMissionAccomplished)
+        {
+            ImagesNotSorted();
+        }
+    }
 
+    void ImagesNotSorted()
+    {
+        timerText.enabled = false;
+        resultText.gameObject.SetActive(true);
+        resultText.text = "FAIL";
+        EventManager.onFail?.Invoke();
+        this.gameObject.SetActive(false);
+    }
 }

@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -5,6 +6,20 @@ using UnityEngine;
 public class GameManager : MonoBehaviour
 {
     GameObject slotPanel;
+    bool isLevelFinished;
+
+    private void OnEnable()
+    {
+        EventManager.sortingIsTrue += OnWin;
+        EventManager.onFail += OnFail;
+    }
+
+    private void OnDisable()
+    {
+        EventManager.sortingIsTrue += OnWin;
+        EventManager.onFail += OnFail;
+    }
+
 
     private void Awake()
     {
@@ -14,7 +29,7 @@ public class GameManager : MonoBehaviour
 
     void Update()
     {
-        if (Input.GetMouseButtonDown(0))
+        if (Input.GetMouseButtonDown(0) && !isLevelFinished )
         {
             ActivateSlotPanel();
         }
@@ -25,4 +40,16 @@ public class GameManager : MonoBehaviour
     {
         slotPanel.SetActive(true);
     }
+
+    private void OnFail()
+    {
+        isLevelFinished = true;
+    }
+
+    private void OnWin()
+    {
+        isLevelFinished = true;
+    }
+
+
 }

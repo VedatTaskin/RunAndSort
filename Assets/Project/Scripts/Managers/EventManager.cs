@@ -6,4 +6,5 @@ using System;
 public class EventManager : MonoBehaviour
 {
     public static Action sortingIsTrue;
+    public static Action onFail;
 }

@@ -11,11 +11,13 @@ public class UIManager : MonoBehaviour
     private void OnEnable()
     {
         EventManager.sortingIsTrue += WinMenu;
+        EventManager.onFail += LoseMenu;
     }
 
     private void OnDisable()
     {
         EventManager.sortingIsTrue -= WinMenu;
+        EventManager.onFail -= LoseMenu;
     }
 
     private void Awake()
@@ -27,12 +29,24 @@ public class UIManager : MonoBehaviour
 
     void WinMenu()
     {
+        StartCoroutine("DisplayWinMenu");
+    }
+
+    IEnumerator DisplayWinMenu()
+    {
+        yield return new WaitForSeconds(3);
         winMenu.SetActive(true);
         gamePlay.SetActive(false);
     }
 
     void LoseMenu()
     {
+        StartCoroutine("DisplayLoseMenu");
+    }
+
+    IEnumerator DisplayLoseMenu()
+    {
+        yield return new WaitForSeconds(2);
         loseMenu.SetActive(true);
         gamePlay.SetActive(false);
     }
