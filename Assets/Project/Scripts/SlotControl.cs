@@ -43,7 +43,8 @@ public class SlotControl : MonoBehaviour, IDropHandler
         {
             if (transform.GetChild(i).gameObject.activeInHierarchy)
             {
-                print(int.Parse(transform.GetChild(i).name));
+                // print(int.Parse(transform.GetChild(i).name));
+
                 if (int.Parse(transform.GetChild(i).name) ==index)
                 {
                     correctImagesCount++;
@@ -52,6 +53,7 @@ public class SlotControl : MonoBehaviour, IDropHandler
                     {
                         // oyun bitti
                         print("hepsi sýralandý");
+                        EventManager.sortingIsTrue?.Invoke();
                     }
                 }
 

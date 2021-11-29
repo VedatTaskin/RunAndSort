@@ -6,7 +6,7 @@ using UnityEngine.UI;
 using UnityEngine.EventSystems;
 
 
-public class Draggable : MonoBehaviour, IBeginDragHandler,IEndDragHandler,IDragHandler
+public class DragImage : MonoBehaviour, IBeginDragHandler,IEndDragHandler,IDragHandler
 {
     public Transform slotTransform;
     public GameObject placeHolder;
