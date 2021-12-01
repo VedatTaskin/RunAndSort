@@ -81,7 +81,7 @@ public class PlayerControl : MonoBehaviour
 
     IEnumerator WinScene()
     {
-        yield return new WaitForSeconds(1f);
+        yield return new WaitForSeconds(0.5f);
         anim.SetTrigger("Win");
         speed = 0;
     }

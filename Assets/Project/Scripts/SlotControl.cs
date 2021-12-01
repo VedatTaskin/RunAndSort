@@ -10,6 +10,7 @@ public class SlotControl : MonoBehaviour, IDropHandler
     List<GameObject> ImagesGO = new List<GameObject>();
     public Text resultText;
     public Text timerText;
+    public GameObject confetti;
     bool IsMissionAccomplished;
     [SerializeField] private int timer=10;
 
@@ -20,6 +21,7 @@ public class SlotControl : MonoBehaviour, IDropHandler
         TakeImageList();
         ShuffleChildImages();
         InvokeRepeating("Timer", 1, 1);
+        confetti.SetActive(false);
     }
 
     private void ShuffleChildImages()
@@ -79,6 +81,7 @@ public class SlotControl : MonoBehaviour, IDropHandler
         IsMissionAccomplished = true;
         EventManager.sortingIsTrue?.Invoke();
         GetComponent<Image>().color = Color.green; // Change slot color to green
+        confetti.SetActive(true); // confetties under main camera activates
         resultText.gameObject.SetActive(true);
         resultText.text = "EXCELLENT";
         CancelInvoke("Timer");
