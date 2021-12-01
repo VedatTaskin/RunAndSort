@@ -82,6 +82,8 @@ public class SlotControl : MonoBehaviour, IDropHandler
         resultText.gameObject.SetActive(true);
         resultText.text = "EXCELLENT";
         CancelInvoke("Timer");
+        timerText.gameObject.SetActive(false);
+        StartCoroutine(CloseSlotPanel());
     }
 
     void Timer()
@@ -101,5 +103,12 @@ public class SlotControl : MonoBehaviour, IDropHandler
         resultText.text = "FAIL";
         EventManager.onFail?.Invoke();
         this.gameObject.SetActive(false);
+    }
+
+
+    IEnumerator CloseSlotPanel()
+    {
+        yield return new WaitForSeconds(1f);
+        gameObject.SetActive(false);
     }
 }

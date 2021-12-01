@@ -7,19 +7,21 @@ public class GameManager : MonoBehaviour
 {
     GameObject slotPanel;
     bool isLevelFinished;
+    bool firstClick;
 
     private void OnEnable()
     {
         EventManager.sortingIsTrue += OnWin;
         EventManager.onFail += OnFail;
+        EventManager.sortingTimerStarted += ActivateSlotPanel;
     }
 
     private void OnDisable()
     {
-        EventManager.sortingIsTrue += OnWin;
-        EventManager.onFail += OnFail;
+        EventManager.sortingIsTrue -= OnWin;
+        EventManager.onFail -= OnFail;
+        EventManager.sortingTimerStarted -= ActivateSlotPanel;
     }
-
 
     private void Awake()
     {
@@ -29,11 +31,12 @@ public class GameManager : MonoBehaviour
 
     void Update()
     {
-        if (Input.GetMouseButtonDown(0) && !isLevelFinished )
+        if (Input.GetMouseButtonDown(0) && !isLevelFinished && !firstClick )
         {
-            ActivateSlotPanel();
+            firstClick = true;
+            EventManager.gameIsStarted?.Invoke();
         }
-
+        
     }
 
     void ActivateSlotPanel()

@@ -1,23 +1,33 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
+
 
 public class UIManager : MonoBehaviour
 {
     public GameObject winMenu;
     public GameObject loseMenu;
     public GameObject gamePlay;
+    public Text TutorialText;
+
+
+    bool isGameStarted;
 
     private void OnEnable()
     {
         EventManager.sortingIsTrue += WinMenu;
         EventManager.onFail += LoseMenu;
+        EventManager.gameIsStarted += GameStarted;
+        EventManager.firstObstaclePassed += OnFirstObstaclePassed;
     }
 
     private void OnDisable()
     {
         EventManager.sortingIsTrue -= WinMenu;
         EventManager.onFail -= LoseMenu;
+        EventManager.gameIsStarted -= GameStarted;
+        EventManager.firstObstaclePassed -= OnFirstObstaclePassed;
     }
 
     private void Awake()
@@ -29,6 +39,7 @@ public class UIManager : MonoBehaviour
 
     void WinMenu()
     {
+        TutorialText.gameObject.SetActive(false);
         StartCoroutine("DisplayWinMenu");
     }
 
@@ -41,6 +52,7 @@ public class UIManager : MonoBehaviour
 
     void LoseMenu()
     {
+        TutorialText.gameObject.SetActive(false);
         StartCoroutine("DisplayLoseMenu");
     }
 
@@ -51,4 +63,27 @@ public class UIManager : MonoBehaviour
         gamePlay.SetActive(false);
     }
 
+    void GameStarted()
+    {
+        isGameStarted = true;
+        ChangeTutorialText("WATCH NOW");
+    }
+
+    void OnFirstObstaclePassed()
+    {
+        ChangeTutorialText ("YOUR TURN !");
+        StartCoroutine(ChangeWarning());
+    }
+
+    IEnumerator ChangeWarning()
+    {
+        yield return new WaitForSeconds(2f);
+        ChangeTutorialText( "SORT THE PICTURES");
+        EventManager.sortingTimerStarted?.Invoke();
+    }
+
+    void ChangeTutorialText(string tutorialText)
+    {
+        TutorialText.text = tutorialText;
+    }
 }
