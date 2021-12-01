@@ -61,7 +61,7 @@ public class DragImage : MonoBehaviour, IBeginDragHandler,IEndDragHandler,IDragH
 
     public void OnEndDrag(PointerEventData eventData)
     {
-        print("On End Drag");
+        //print("On End Drag");
         canvasGroup.blocksRaycasts = true;
         canvasGroup.alpha = 1f;
         this.transform.SetParent(slotTransform);

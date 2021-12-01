@@ -70,7 +70,7 @@ public class SlotControl : MonoBehaviour, IDropHandler
 
     public void OnDrop(PointerEventData eventData)
     {
-        print("On Drop");      
+        //print("On Drop");      
     }
 
     void ImagesSorted()
@@ -104,7 +104,6 @@ public class SlotControl : MonoBehaviour, IDropHandler
         EventManager.onFail?.Invoke();
         this.gameObject.SetActive(false);
     }
-
 
     IEnumerator CloseSlotPanel()
     {

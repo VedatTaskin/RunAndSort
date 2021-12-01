@@ -39,26 +39,27 @@ public class UIManager : MonoBehaviour
 
     void WinMenu()
     {
-        TutorialText.gameObject.SetActive(false);
+        TutorialText.transform.parent.gameObject.SetActive(false);
         StartCoroutine("DisplayWinMenu");
+        TutorialText.gameObject.SetActive(false);
     }
 
     IEnumerator DisplayWinMenu()
     {
-        yield return new WaitForSeconds(3);
+        yield return new WaitForSeconds(5);
         winMenu.SetActive(true);
         gamePlay.SetActive(false);
     }
 
     void LoseMenu()
     {
-        TutorialText.gameObject.SetActive(false);
+        TutorialText.transform.parent.gameObject.SetActive(false);
         StartCoroutine("DisplayLoseMenu");
     }
 
     IEnumerator DisplayLoseMenu()
     {
-        yield return new WaitForSeconds(2);
+        yield return new WaitForSeconds(3);
         loseMenu.SetActive(true);
         gamePlay.SetActive(false);
     }
