@@ -87,4 +87,9 @@ public class UIManager : MonoBehaviour
     {
         TutorialText.text = tutorialText;
     }
+
+    public void ExitButton()
+    {
+        Application.Quit();
+    }
 }

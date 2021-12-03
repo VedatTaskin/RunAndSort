@@ -35,7 +35,7 @@ public class GameManager : MonoBehaviour
         if (Input.GetMouseButtonDown(0) && !isLevelFinished && !firstClick )
         {
             firstClick = true;
-            EventManager.gameIsStarted?.Invoke();
+            EventManager.gameIsStarted?.Invoke();            
         }
         
     }

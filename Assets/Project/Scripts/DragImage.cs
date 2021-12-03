@@ -27,7 +27,7 @@ public class DragImage : MonoBehaviour, IBeginDragHandler,IEndDragHandler,IDragH
         placeHolder.SetActive(true);
         placeHolder.transform.SetSiblingIndex(this.transform.GetSiblingIndex());
         canvasGroup.blocksRaycasts = false;
-        canvasGroup.alpha = .5f;
+        canvasGroup.alpha = .7f;
         this.transform.SetParent(this.transform.root);
     }
 
