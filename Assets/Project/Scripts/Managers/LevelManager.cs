@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
+
 public class LevelManager : MonoBehaviour
 {
     private int currentScene;
@@ -28,14 +29,20 @@ public class LevelManager : MonoBehaviour
 
     void ChangeLevelIndex()
     {
-        switch (currentScene)
+        Animator animator;
+        switch (currentScene + 1)
         {
-            case 0:
+
             case 1:
+                player.AddComponent<PlayerControl1>();
+                animator = player.transform.GetChild(0).GetComponent<Animator>();
+                animator.runtimeAnimatorController = Resources.Load("CharacterAnimator 1") as RuntimeAnimatorController;
+                break;
             case 2:
+                break;
             case 3:
-                player.GetComponent<PlayerControl3>().enabled = true;
-                Animator animator = player.transform.GetChild(0).GetComponent<Animator>();
+                player.AddComponent<PlayerControl3>();
+                animator = player.transform.GetChild(0).GetComponent<Animator>();
                 animator.runtimeAnimatorController = Resources.Load("CharacterAnimator 3") as RuntimeAnimatorController;
                 break;
             default:

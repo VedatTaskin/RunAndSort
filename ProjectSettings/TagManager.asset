@@ -11,6 +11,7 @@ TagManager:
   - StartTrigger
   - EndTrigger
   - Obstacle
+  - Enemy
   layers:
   - Default
   - TransparentFX

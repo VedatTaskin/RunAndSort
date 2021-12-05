@@ -11,7 +11,7 @@ public class SlotControl : MonoBehaviour, IDropHandler
     public Text resultText;
     public Text timerText;
     public GameObject confetti;
-    bool IsMissionAccomplished;
+    bool imagesAreSorted;
     [SerializeField] private int timer=10;
 
 
@@ -70,15 +70,10 @@ public class SlotControl : MonoBehaviour, IDropHandler
         }
     }
 
-    public void OnDrop(PointerEventData eventData)
-    {
-        //print("On Drop");      
-    }
-
     void ImagesSorted()
     {
         // oyun bitti
-        IsMissionAccomplished = true;
+        imagesAreSorted = true;
         EventManager.sortingIsTrue?.Invoke();
         GetComponent<Image>().color = Color.green; // Change slot color to green
         confetti.SetActive(true); // confetties under main camera activates
@@ -93,7 +88,7 @@ public class SlotControl : MonoBehaviour, IDropHandler
     {
         timer--;
         timerText.text = timer.ToString();
-        if (timer <=0 && !IsMissionAccomplished)
+        if (timer <=0 && !imagesAreSorted)
         {
             ImagesNotSorted();
         }
@@ -112,5 +107,11 @@ public class SlotControl : MonoBehaviour, IDropHandler
     {
         yield return new WaitForSeconds(1f);
         gameObject.SetActive(false);
+    }
+
+    // Not used yet
+    public void OnDrop(PointerEventData eventData)
+    {
+        //print("On Drop");      
     }
 }
