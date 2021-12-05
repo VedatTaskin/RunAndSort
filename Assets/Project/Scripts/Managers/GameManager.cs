@@ -6,7 +6,8 @@ using UnityEngine;
 
 public class GameManager : MonoBehaviour
 {
-    GameObject slotPanel;
+    public GameObject slotPanel;
+    public GameObject moveCounter;
     bool isLevelFinished;
     bool firstClick;
 
@@ -14,20 +15,20 @@ public class GameManager : MonoBehaviour
     {
         EventManager.sortingIsTrue += OnWin;
         EventManager.onFail += OnFail;
-        EventManager.sortingTimerStarted += ActivateSlotPanel;
+        EventManager.sortingRoutineStarted += ActivatePanels;
     }
 
     private void OnDisable()
     {
         EventManager.sortingIsTrue -= OnWin;
         EventManager.onFail -= OnFail;
-        EventManager.sortingTimerStarted -= ActivateSlotPanel;
+        EventManager.sortingRoutineStarted -= ActivatePanels;
     }
 
     private void Awake()
     {
-        slotPanel = GameObject.FindGameObjectWithTag("Slot");
         slotPanel.SetActive(false);
+        moveCounter.SetActive(false);
     }
 
     void Update()
@@ -40,9 +41,10 @@ public class GameManager : MonoBehaviour
         
     }
 
-    void ActivateSlotPanel()
+    void ActivatePanels()
     {
         slotPanel.SetActive(true);
+        moveCounter.SetActive(true);
     }
 
     private void OnFail()

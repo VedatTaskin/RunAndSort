@@ -12,13 +12,13 @@ public class DragImage : MonoBehaviour, IBeginDragHandler,IEndDragHandler,IDragH
     public GameObject placeHolder;
     RectTransform rectTransform;
     CanvasGroup canvasGroup;
-   
+    int currentOrder=0;  
     
 
     private void Awake()
     {
         rectTransform = GetComponent<RectTransform>();
-        canvasGroup = GetComponent<CanvasGroup>();        
+        canvasGroup = GetComponent<CanvasGroup>();       
     }
 
     public void OnBeginDrag(PointerEventData eventData)
@@ -29,6 +29,8 @@ public class DragImage : MonoBehaviour, IBeginDragHandler,IEndDragHandler,IDragH
         canvasGroup.blocksRaycasts = false;
         canvasGroup.alpha = .7f;
         this.transform.SetParent(this.transform.root);
+
+        currentOrder = placeHolder.transform.GetSiblingIndex() + 1 ; // we will check if we put the image in same place
     }
 
     public void OnDrag(PointerEventData eventData)
@@ -68,9 +70,13 @@ public class DragImage : MonoBehaviour, IBeginDragHandler,IEndDragHandler,IDragH
         this.transform.SetSiblingIndex(placeHolder.transform.GetSiblingIndex());
         placeHolder.SetActive(false);
 
-        slotTransform.GetComponent<SlotControl>().CheckImagesOrder();  
-        
-    }
+        slotTransform.GetComponent<SlotControl>().CheckImagesOrder();
 
+        //Update Remainig Moves if we don't put it in same place
+        if (currentOrder != placeHolder.transform.GetSiblingIndex())
+        {
+            EventManager.decreaseMoveCount?.Invoke();
+        }
+    }
 
 }

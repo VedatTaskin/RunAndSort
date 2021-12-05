@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -10,9 +11,11 @@ public class UIManager : MonoBehaviour
     public GameObject loseMenu;
     public GameObject gamePlay;
     public Text TutorialText;
+    public Text remainingMoveText;
 
 
     bool isGameStarted;
+    int movesRemaining =5;
 
     private void OnEnable()
     {
@@ -20,6 +23,7 @@ public class UIManager : MonoBehaviour
         EventManager.onFail += LoseMenu;
         EventManager.gameIsStarted += GameStarted;
         EventManager.firstObstaclePassed += OnFirstObstaclePassed;
+        EventManager.decreaseMoveCount += DecreaseMoveCount;
     }
 
     private void OnDisable()
@@ -28,6 +32,7 @@ public class UIManager : MonoBehaviour
         EventManager.onFail -= LoseMenu;
         EventManager.gameIsStarted -= GameStarted;
         EventManager.firstObstaclePassed -= OnFirstObstaclePassed;
+        EventManager.decreaseMoveCount -= DecreaseMoveCount;
     }
 
     private void Awake()
@@ -35,6 +40,7 @@ public class UIManager : MonoBehaviour
         gamePlay.SetActive(true);
         loseMenu.SetActive(false);
         winMenu.SetActive(false);
+        remainingMoveText.text = movesRemaining.ToString();
     }
 
     void WinMenu()
@@ -80,7 +86,7 @@ public class UIManager : MonoBehaviour
     {
         yield return new WaitForSeconds(2f);
         ChangeTutorialText( "SORT THE PICTURES");
-        EventManager.sortingTimerStarted?.Invoke();
+        EventManager.sortingRoutineStarted?.Invoke();
     }
 
     void ChangeTutorialText(string tutorialText)
@@ -91,5 +97,20 @@ public class UIManager : MonoBehaviour
     public void ExitButton()
     {
         Application.Quit();
+    }
+
+    private void DecreaseMoveCount()
+    {
+        movesRemaining--;
+        UpdateRemainingMoves();
+    }
+
+    void UpdateRemainingMoves()
+    {
+        remainingMoveText.text = movesRemaining.ToString();
+        if (movesRemaining==0)
+        {
+            EventManager.onFail?.Invoke();
+        }        
     }
 }

@@ -9,18 +9,25 @@ public class SlotControl : MonoBehaviour, IDropHandler
 {
     List<GameObject> ImagesGO = new List<GameObject>();
     public Text resultText;
-    public Text timerText;
     public GameObject confetti;
     bool imagesAreSorted;
+    bool sortAgain;
     [SerializeField] private int timer=10;
 
+    private void OnEnable()
+    {
+        EventManager.onFail += ImagesNotSorted;
+    }
 
+    private void OnDisable()
+    {
+        EventManager.onFail += ImagesNotSorted;
+    }
 
     private void Awake()
     {
         TakeImageList();
         ShuffleChildImages();
-        InvokeRepeating("Timer", 1, 1);
         confetti.SetActive(false);
     }
 
@@ -30,6 +37,13 @@ public class SlotControl : MonoBehaviour, IDropHandler
         {
             int randomIndex =  UnityEngine.Random.Range(i, ImagesGO.Count);
             transform.GetChild(i).SetSiblingIndex(randomIndex);
+        }
+
+        // we check if the begining sorting is mixed or not
+        CheckImagesOrder();
+        if (sortAgain)
+        {
+            ShuffleChildImages();
         }
     }
 
@@ -53,7 +67,6 @@ public class SlotControl : MonoBehaviour, IDropHandler
         {
             if (transform.GetChild(i).gameObject.activeInHierarchy)
             {
-                // print(int.Parse(transform.GetChild(i).name));
 
                 if (int.Parse(transform.GetChild(i).name) ==index)
                 {
@@ -62,12 +75,14 @@ public class SlotControl : MonoBehaviour, IDropHandler
                     if (correctImagesCount == ImagesGO.Count )
                     {
                         ImagesSorted();
+                        sortAgain = true; // we will use it if the begining sorting not mix our images;
                     }
                 }
 
             } 
 
         }
+        
     }
 
     void ImagesSorted()
@@ -79,27 +94,13 @@ public class SlotControl : MonoBehaviour, IDropHandler
         confetti.SetActive(true); // confetties under main camera activates
         resultText.gameObject.SetActive(true);
         resultText.text = "EXCELLENT";
-        CancelInvoke("Timer");
-        timerText.gameObject.SetActive(false);
         StartCoroutine(CloseSlotPanel());
-    }
-
-    void Timer()
-    {
-        timer--;
-        timerText.text = timer.ToString();
-        if (timer <=0 && !imagesAreSorted)
-        {
-            ImagesNotSorted();
-        }
     }
 
     void ImagesNotSorted()
     {
-        timerText.enabled = false;
         resultText.gameObject.SetActive(true);
         resultText.text = "FAIL";
-        EventManager.onFail?.Invoke();
         this.gameObject.SetActive(false);
     }
 
@@ -114,4 +115,5 @@ public class SlotControl : MonoBehaviour, IDropHandler
     {
         //print("On Drop");      
     }
+
 }

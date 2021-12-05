@@ -7,10 +7,12 @@ public class PlayerControl3 : MonoBehaviour
 {
 
     public float speed=10;
+    float startSpeed;
     Animator anim;
     bool isGameStarted;
-    bool imagesAreSorted;
+    int obstaclePassed = 0;
     GameObject obstacle;
+    bool isMissionAccomplished; // second obstacle is passed?
     
 
     private void OnEnable()
@@ -31,14 +33,14 @@ public class PlayerControl3 : MonoBehaviour
     {
         anim = transform.GetChild(0).GetComponent<Animator>();
         obstacle = GameObject.FindGameObjectWithTag("Obstacle");
+        startSpeed = speed;
     }
 
     private void Update()
     {
-        if (isGameStarted)
+        if (isGameStarted && speed !=0)
         {
-            transform.Translate(Vector3.forward * Time.deltaTime * speed);
-            anim.SetTrigger("Run");
+            transform.Translate(Vector3.forward * Time.deltaTime * speed);            
         }
     }
 
@@ -47,6 +49,7 @@ public class PlayerControl3 : MonoBehaviour
     void GameStarted()
     {
         isGameStarted = true;
+        anim.SetTrigger("Run");
     }
 
     private void OnTriggerEnter(Collider other)
@@ -58,30 +61,42 @@ public class PlayerControl3 : MonoBehaviour
                 anim.SetTrigger("Jump");
                 break;
             case "EndTrigger":
+                obstaclePassed++;
                 speed *= 2f;
+                anim.SetTrigger("Run");
+                StartCoroutine("MoveLittleForward");
                 EventManager.firstObstaclePassed?.Invoke();
                 other.transform.parent.gameObject.SetActive(false);
-                if (imagesAreSorted)
-                {
-                    StartCoroutine(WinScene());
-                }
                 break;
             default:
                 break;
         }        
     }
 
+
+    // after jumping we move player a little forward
+    IEnumerator MoveLittleForward()
+    {
+        yield return new WaitForSeconds(1);
+        speed = 0;
+        anim.SetTrigger("Idle");
+    }
+
     //if sorting is true, we bring obtsacle in front of player; and sets bool "imagesAreSorted" true
     void SortingIsTrue()
     {
-        imagesAreSorted = true;
         obstacle.transform.position = new Vector3(obstacle.transform.position.x, obstacle.transform.position.y,
             transform.position.z + 20);
+        speed = startSpeed;
+        
+        anim.SetTrigger("Run");
+        StartCoroutine("WinScene");
     }
 
     IEnumerator WinScene()
     {
-        yield return new WaitForSeconds(0.5f);
+        yield return new WaitUntil(() => obstaclePassed ==2);
+        yield return new WaitForSeconds(1f);
         anim.SetTrigger("Win");
         speed = 0;
     }
