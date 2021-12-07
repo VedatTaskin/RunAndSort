@@ -8,7 +8,6 @@ public class LevelManager : MonoBehaviour
 {
     private int currentScene;
     GameObject player;
-    Animator animator;
 
     private void Start()
     {
@@ -30,6 +29,7 @@ public class LevelManager : MonoBehaviour
     void ChangeLevelIndex()
     {
         Animator animator;
+
         switch (currentScene + 1)
         {
 
@@ -39,11 +39,9 @@ public class LevelManager : MonoBehaviour
                 animator.runtimeAnimatorController = Resources.Load("CharacterAnimator 1") as RuntimeAnimatorController;
                 break;
             case 2:
-                break;
-            case 3:
-                player.AddComponent<PlayerControl3>();
+                player.AddComponent<PlayerControl2>();
                 animator = player.transform.GetChild(0).GetComponent<Animator>();
-                animator.runtimeAnimatorController = Resources.Load("CharacterAnimator 3") as RuntimeAnimatorController;
+                animator.runtimeAnimatorController = Resources.Load("CharacterAnimator 2") as RuntimeAnimatorController;
                 break;
             default:
                 break;

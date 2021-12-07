@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using DG.Tweening;
 
-public class PlayerControl3 : MonoBehaviour
+public class PlayerControl2 : MonoBehaviour
 {
 
     public float speed=10;
