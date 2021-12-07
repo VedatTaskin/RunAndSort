@@ -7,6 +7,7 @@ public class PlayerControl1 : MonoBehaviour
 {    
     Animator anim;
 
+
     private void OnEnable()
     {
         EventManager.onFail += SortingIsFalse;

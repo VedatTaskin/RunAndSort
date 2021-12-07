@@ -9,6 +9,7 @@ public class EnemyControl1 : MonoBehaviour
     bool isSortingTrue;
     public float enemySpeed = 2;
     public float minDistance = 1.5f;
+    public ParticleSystem attackFx;
     Animator anim;
     Transform playerTransform;
 
@@ -64,6 +65,9 @@ public class EnemyControl1 : MonoBehaviour
         enemyState = State.Death;
         anim.SetTrigger("Death");
         transform.DOMoveZ(transform.position.z + 5, 1).OnComplete(SortingStage);
+
+        // attackFX will be played,
+        attackFx.Play();
     }
 
     void SortingStage()

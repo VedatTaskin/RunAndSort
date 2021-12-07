@@ -2,25 +2,26 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Cinemachine;
 
 
 public class GameManager : MonoBehaviour
 {
-    public GameObject slotPanel;
-    public GameObject moveCounter;
+    [SerializeField] private GameObject slotPanel;
+    [SerializeField] private GameObject moveCounter;
     bool isLevelFinished;
     bool firstClick;
 
     private void OnEnable()
     {
-        EventManager.sortingIsTrue += OnWin;
+        EventManager.sortingIsTrue += OnSortingTrue;
         EventManager.onFail += OnFail;
         EventManager.firstObstaclePassed += ActivatePanels;
     }
 
     private void OnDisable()
     {
-        EventManager.sortingIsTrue -= OnWin;
+        EventManager.sortingIsTrue -= OnSortingTrue;
         EventManager.onFail -= OnFail;
         EventManager.firstObstaclePassed -= ActivatePanels;
     }
@@ -52,9 +53,9 @@ public class GameManager : MonoBehaviour
         isLevelFinished = true;
     }
 
-    private void OnWin()
+    private void OnSortingTrue()
     {
-        isLevelFinished = true;
+        isLevelFinished = true;        
     }
 
 
