@@ -15,14 +15,14 @@ public class GameManager : MonoBehaviour
     {
         EventManager.sortingIsTrue += OnWin;
         EventManager.onFail += OnFail;
-        EventManager.sortingRoutineStarted += ActivatePanels;
+        EventManager.firstObstaclePassed += ActivatePanels;
     }
 
     private void OnDisable()
     {
         EventManager.sortingIsTrue -= OnWin;
         EventManager.onFail -= OnFail;
-        EventManager.sortingRoutineStarted -= ActivatePanels;
+        EventManager.firstObstaclePassed -= ActivatePanels;
     }
 
     private void Awake()

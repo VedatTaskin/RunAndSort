@@ -13,26 +13,30 @@ public class UIManager : MonoBehaviour
     public Text TutorialText;
     public Text remainingMoveText;
 
-
+    bool isSortingTrue;
     bool isGameStarted;
     int movesRemaining =5;
 
     private void OnEnable()
     {
-        EventManager.sortingIsTrue += WinMenu;
+        EventManager.winMenu += WinMenu;
         EventManager.onFail += LoseMenu;
         EventManager.gameIsStarted += GameStarted;
         EventManager.firstObstaclePassed += OnFirstObstaclePassed;
         EventManager.decreaseMoveCount += DecreaseMoveCount;
+        EventManager.sortingIsTrue += CloseTutorialText;
+        EventManager.onFail += CloseTutorialText;
     }
 
     private void OnDisable()
     {
-        EventManager.sortingIsTrue -= WinMenu;
+        EventManager.winMenu -= WinMenu;
         EventManager.onFail -= LoseMenu;
         EventManager.gameIsStarted -= GameStarted;
         EventManager.firstObstaclePassed -= OnFirstObstaclePassed;
         EventManager.decreaseMoveCount -= DecreaseMoveCount;
+        EventManager.sortingIsTrue -= CloseTutorialText;
+        EventManager.onFail -= CloseTutorialText;
     }
 
     private void Awake()
@@ -45,21 +49,18 @@ public class UIManager : MonoBehaviour
 
     void WinMenu()
     {
-        TutorialText.transform.parent.gameObject.SetActive(false);
         StartCoroutine("DisplayWinMenu");
-        TutorialText.gameObject.SetActive(false);
     }
 
     IEnumerator DisplayWinMenu()
     {
-        yield return new WaitForSeconds(5);
+        yield return new WaitForSeconds(2);
         winMenu.SetActive(true);
         gamePlay.SetActive(false);
     }
 
     void LoseMenu()
     {
-        TutorialText.transform.parent.gameObject.SetActive(false);
         StartCoroutine("DisplayLoseMenu");
     }
 
@@ -73,25 +74,19 @@ public class UIManager : MonoBehaviour
     void GameStarted()
     {
         isGameStarted = true;
-        ChangeTutorialText("WATCH NOW");
+        TutorialText.text = "WATCH NOW";
     }
 
     void OnFirstObstaclePassed()
     {
-        ChangeTutorialText ("YOUR TURN !");
-        StartCoroutine(ChangeWarning());
+        TutorialText.text = "YOUR TURN!";
+        StartCoroutine(BeginSortingRoutine());
     }
 
-    IEnumerator ChangeWarning()
-    {
+    IEnumerator BeginSortingRoutine()
+    {        
         yield return new WaitForSeconds(2f);
-        ChangeTutorialText( "SORT THE PICTURES");
-        EventManager.sortingRoutineStarted?.Invoke();
-    }
-
-    void ChangeTutorialText(string tutorialText)
-    {
-        TutorialText.text = tutorialText;
+        TutorialText.text = "SORT THE PICTURES";
     }
 
     public void ExitButton()
@@ -108,9 +103,18 @@ public class UIManager : MonoBehaviour
     void UpdateRemainingMoves()
     {
         remainingMoveText.text = movesRemaining.ToString();
-        if (movesRemaining==0)
+        if (movesRemaining <= 0)
         {
-            EventManager.onFail?.Invoke();
+            if (!isSortingTrue)
+            {
+                EventManager.onFail?.Invoke();
+            }
         }        
+    }
+
+    void CloseTutorialText()
+    {
+        isSortingTrue = true;
+        TutorialText.transform.parent.gameObject.SetActive(false);
     }
 }

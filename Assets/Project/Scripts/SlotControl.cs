@@ -10,9 +10,8 @@ public class SlotControl : MonoBehaviour, IDropHandler
     List<GameObject> ImagesGO = new List<GameObject>();
     public Text resultText;
     public GameObject confetti;
-    bool imagesAreSorted;
-    bool sortAgain;
-    [SerializeField] private int timer=10;
+    //bool imagesAreSorted;
+    //bool sortAgain;
 
     private void OnEnable()
     {
@@ -37,13 +36,6 @@ public class SlotControl : MonoBehaviour, IDropHandler
         {
             int randomIndex =  UnityEngine.Random.Range(i, ImagesGO.Count);
             transform.GetChild(i).SetSiblingIndex(randomIndex);
-        }
-
-        // we check if the begining sorting is mixed or not
-        CheckImagesOrder();
-        if (sortAgain)
-        {
-            ShuffleChildImages();
         }
     }
 
@@ -75,7 +67,6 @@ public class SlotControl : MonoBehaviour, IDropHandler
                     if (correctImagesCount == ImagesGO.Count )
                     {
                         ImagesSorted();
-                        sortAgain = true; // we will use it if the begining sorting not mix our images;
                     }
                 }
 
@@ -88,7 +79,6 @@ public class SlotControl : MonoBehaviour, IDropHandler
     void ImagesSorted()
     {
         // oyun bitti
-        imagesAreSorted = true;
         EventManager.sortingIsTrue?.Invoke();
         GetComponent<Image>().color = Color.green; // Change slot color to green
         confetti.SetActive(true); // confetties under main camera activates

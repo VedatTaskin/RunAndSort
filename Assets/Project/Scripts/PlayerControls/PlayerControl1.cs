@@ -6,23 +6,19 @@ using DG.Tweening;
 public class PlayerControl1 : MonoBehaviour
 {    
     Animator anim;
-    bool imagesAreSorted;
-    GameObject enemy;
-    Ease jumpEaseType = Ease.OutQuad;
-
 
     private void OnEnable()
     {
-        EventManager.sortingIsTrue += SortingIsTrue;
         EventManager.onFail += SortingIsFalse;
         EventManager.enemyIsClose += EnemyIsClose;
+        EventManager.winMenu += Win;
     }
 
     private void OnDisable()
     {
-        EventManager.sortingIsTrue -= SortingIsTrue;
         EventManager.onFail -= SortingIsFalse;
         EventManager.enemyIsClose -= EnemyIsClose;
+        EventManager.winMenu -= Win;
     }
 
     private void Awake()
@@ -30,18 +26,8 @@ public class PlayerControl1 : MonoBehaviour
         anim = transform.GetChild(0).GetComponent<Animator>();
     }
 
-    //if sorting is true, we bring obtsacle in front of player; and sets bool "imagesAreSorted" true
-    void SortingIsTrue()
+    void Win()
     {
-        imagesAreSorted = true;
-
-        // Play Kick animation again
-
-    }
-
-    IEnumerator WinScene()
-    {
-        yield return new WaitForSeconds(0.5f);
         anim.SetTrigger("Win");
     }
 
@@ -51,13 +37,17 @@ public class PlayerControl1 : MonoBehaviour
         anim.SetTrigger("Lose");
     }
 
+    // if enemy is close we play kick animation after 2 seconds
     void EnemyIsClose()
     {
         Invoke("PlayKickAnimation", 2);
     }
 
+    // if enemy is close we play kick animation after 2 seconds,  we call this from "EnemyIsClose"
     void PlayKickAnimation()
     {
         anim.SetTrigger("Kick");
     }
+
+
 }

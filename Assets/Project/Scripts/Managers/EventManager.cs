@@ -9,7 +9,8 @@ public class EventManager : MonoBehaviour
     public static Action onFail;
     public static Action gameIsStarted;
     public static Action firstObstaclePassed;
-    public static Action sortingRoutineStarted;
     public static Action enemyIsClose;
     public static Action decreaseMoveCount;
+    public static Action enemyCanDie; 
+    public static Action winMenu;  // call winmenu
 }

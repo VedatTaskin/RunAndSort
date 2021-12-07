@@ -10,9 +10,9 @@ public class PlayerControl3 : MonoBehaviour
     float startSpeed;
     Animator anim;
     bool isGameStarted;
+    bool isSortingTrue;
     int obstaclePassed = 0;
     GameObject obstacle;
-    bool isMissionAccomplished; // second obstacle is passed?
     
 
     private void OnEnable()
@@ -65,7 +65,10 @@ public class PlayerControl3 : MonoBehaviour
                 speed *= 2f;
                 anim.SetTrigger("Run");
                 StartCoroutine("MoveLittleForward");
-                EventManager.firstObstaclePassed?.Invoke();
+                if (!isSortingTrue)
+                {
+                    EventManager.firstObstaclePassed?.Invoke();
+                }
                 other.transform.parent.gameObject.SetActive(false);
                 break;
             default:
@@ -88,7 +91,8 @@ public class PlayerControl3 : MonoBehaviour
         obstacle.transform.position = new Vector3(obstacle.transform.position.x, obstacle.transform.position.y,
             transform.position.z + 20);
         speed = startSpeed;
-        
+
+        isSortingTrue = true;
         anim.SetTrigger("Run");
         StartCoroutine("WinScene");
     }
