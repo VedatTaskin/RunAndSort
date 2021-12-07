@@ -74,7 +74,7 @@ public class EnemyControl1 : MonoBehaviour
     {
         if (isSortingTrue)
         {
-            EventManager.winMenu?.Invoke();
+            EventManager.winMenu?.Invoke();           ;
         }
         else if (!isSortingTrue)
         {

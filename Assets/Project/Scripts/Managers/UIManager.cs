@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using DG.Tweening;
 
 
 public class UIManager : MonoBehaviour
@@ -10,12 +11,14 @@ public class UIManager : MonoBehaviour
     public GameObject winMenu;
     public GameObject loseMenu;
     public GameObject gamePlay;
+    public GameObject scorePanel;
     public Text TutorialText;
     public Text remainingMoveText;
 
     bool isSortingTrue;
     bool isGameStarted;
     int movesRemaining =5;
+    int score = 0;
 
     private void OnEnable()
     {
@@ -24,8 +27,7 @@ public class UIManager : MonoBehaviour
         EventManager.gameIsStarted += GameStarted;
         EventManager.firstObstaclePassed += OnFirstObstaclePassed;
         EventManager.decreaseMoveCount += DecreaseMoveCount;
-        EventManager.sortingIsTrue += CloseTutorialText;
-        EventManager.onFail += CloseTutorialText;
+        EventManager.sortingIsTrue += SortingIsTrue;
     }
 
     private void OnDisable()
@@ -35,8 +37,7 @@ public class UIManager : MonoBehaviour
         EventManager.gameIsStarted -= GameStarted;
         EventManager.firstObstaclePassed -= OnFirstObstaclePassed;
         EventManager.decreaseMoveCount -= DecreaseMoveCount;
-        EventManager.sortingIsTrue -= CloseTutorialText;
-        EventManager.onFail -= CloseTutorialText;
+        EventManager.sortingIsTrue += SortingIsTrue;
     }
 
     private void Awake()
@@ -45,6 +46,7 @@ public class UIManager : MonoBehaviour
         loseMenu.SetActive(false);
         winMenu.SetActive(false);
         remainingMoveText.text = movesRemaining.ToString();
+        scorePanel.transform.GetChild(1).transform.GetComponent<Text>().text = "0";
     }
 
     void WinMenu()
@@ -53,20 +55,23 @@ public class UIManager : MonoBehaviour
     }
 
     IEnumerator DisplayWinMenu()
-    {
+    {        
         yield return new WaitForSeconds(2);
+        TutorialText.transform.parent.gameObject.SetActive(false);
         winMenu.SetActive(true);
-        gamePlay.SetActive(false);
+        StartCoroutine(ScoreChangeAnimation());
     }
 
     void LoseMenu()
     {
+        TutorialText.text = "SO BAD";
         StartCoroutine("DisplayLoseMenu");
     }
 
     IEnumerator DisplayLoseMenu()
     {
         yield return new WaitForSeconds(3);
+        TutorialText.transform.parent.gameObject.SetActive(false);
         loseMenu.SetActive(true);
         gamePlay.SetActive(false);
     }
@@ -112,9 +117,28 @@ public class UIManager : MonoBehaviour
         }        
     }
 
-    void CloseTutorialText()
+    void SortingIsTrue()
     {
         isSortingTrue = true;
-        TutorialText.transform.parent.gameObject.SetActive(false);
+        TutorialText.text = "EXCELLENT";
+    }
+
+    IEnumerator ScoreChangeAnimation()
+    {
+        int loopCount = movesRemaining;
+        for (int i = 0; i < loopCount; i++)
+        {
+            remainingMoveText.transform.DOShakeScale(0.5f, 1, 10, 90);
+            scorePanel.transform.GetChild(0).transform.DOShakeScale(0.5f, 1, 10, 90);
+
+            movesRemaining--;
+            score += 100;
+            remainingMoveText.text = movesRemaining.ToString();
+            scorePanel.transform.GetChild(1).transform.GetComponent<Text>().text = score.ToString();
+            yield return new WaitForSeconds(0.6f);
+        }
+
+        remainingMoveText.transform.parent.gameObject.SetActive(false);
+
     }
 }

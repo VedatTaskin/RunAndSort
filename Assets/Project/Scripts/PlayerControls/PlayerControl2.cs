@@ -103,6 +103,7 @@ public class PlayerControl2 : MonoBehaviour
         yield return new WaitForSeconds(1f);
         anim.SetTrigger("Win");
         speed = 0;
+        EventManager.winMenu?.Invoke();
     }
 
     //if sorting is false, we stop player; 

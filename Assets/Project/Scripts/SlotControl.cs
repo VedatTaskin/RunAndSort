@@ -5,13 +5,11 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
-public class SlotControl : MonoBehaviour, IDropHandler
+public class SlotControl : MonoBehaviour
 {
     List<GameObject> ImagesGO = new List<GameObject>();
-    public Text resultText;
     public GameObject confetti;
-    //bool imagesAreSorted;
-    //bool sortAgain;
+
 
     private void OnEnable()
     {
@@ -78,19 +76,14 @@ public class SlotControl : MonoBehaviour, IDropHandler
 
     void ImagesSorted()
     {
-        // oyun bitti
         EventManager.sortingIsTrue?.Invoke();
         GetComponent<Image>().color = Color.green; // Change slot color to green
         confetti.SetActive(true); // confetties under main camera activates
-        resultText.gameObject.SetActive(true);
-        resultText.text = "EXCELLENT";
         StartCoroutine(CloseSlotPanel());
     }
 
     void ImagesNotSorted()
     {
-        resultText.gameObject.SetActive(true);
-        resultText.text = "FAIL";
         this.gameObject.SetActive(false);
     }
 
@@ -98,12 +91,6 @@ public class SlotControl : MonoBehaviour, IDropHandler
     {
         yield return new WaitForSeconds(1f);
         gameObject.SetActive(false);
-    }
-
-    // Not used yet
-    public void OnDrop(PointerEventData eventData)
-    {
-        //print("On Drop");      
     }
 
 }
