@@ -46,20 +46,24 @@ public class UIManager : MonoBehaviour
         loseMenu.SetActive(false);
         winMenu.SetActive(false);
         remainingMoveText.text = movesRemaining.ToString();
-        scorePanel.transform.GetChild(1).transform.GetComponent<Text>().text = "0";
+
+        if (PlayerPrefs.HasKey("Score"))
+        {
+            score = PlayerPrefs.GetInt("Score");
+        }
+        scorePanel.transform.GetChild(1).transform.GetComponent<Text>().text = score.ToString();
     }
 
     void WinMenu()
     {
-        StartCoroutine("DisplayWinMenu");
+        StartCoroutine("ScoreChangeAnimation");
     }
 
     IEnumerator DisplayWinMenu()
     {        
-        yield return new WaitForSeconds(2);
+        yield return new WaitForSeconds(1);
         TutorialText.transform.parent.gameObject.SetActive(false);
-        winMenu.SetActive(true);
-        StartCoroutine(ScoreChangeAnimation());
+        winMenu.SetActive(true);        
     }
 
     void LoseMenu()
@@ -130,6 +134,7 @@ public class UIManager : MonoBehaviour
         {
             remainingMoveText.transform.DOShakeScale(0.5f, 1, 10, 90);
             scorePanel.transform.GetChild(0).transform.DOShakeScale(0.5f, 1, 10, 90);
+            scorePanel.transform.GetChild(1).transform.GetComponent<Text>().gameObject.transform.DOShakeScale(0.5f, 1, 10, 90);
 
             movesRemaining--;
             score += 100;
@@ -140,5 +145,7 @@ public class UIManager : MonoBehaviour
 
         remainingMoveText.transform.parent.gameObject.SetActive(false);
 
+        PlayerPrefs.SetInt("Score", score);
+        StartCoroutine("DisplayWinMenu");
     }
 }
