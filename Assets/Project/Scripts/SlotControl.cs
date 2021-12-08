@@ -8,7 +8,7 @@ using UnityEngine.UI;
 public class SlotControl : MonoBehaviour
 {
     List<GameObject> ImagesGO = new List<GameObject>();
-    public GameObject confetti;
+    GameObject confetti;
 
 
     private void OnEnable()
@@ -25,7 +25,6 @@ public class SlotControl : MonoBehaviour
     {
         TakeImageList();
         ShuffleChildImages();
-        confetti.SetActive(false);
     }
 
     private void ShuffleChildImages()
@@ -78,7 +77,6 @@ public class SlotControl : MonoBehaviour
     {
         EventManager.sortingIsTrue?.Invoke();
         GetComponent<Image>().color = Color.green; // Change slot color to green
-        confetti.SetActive(true); // confetties under main camera activates
         StartCoroutine(CloseSlotPanel());
     }
 

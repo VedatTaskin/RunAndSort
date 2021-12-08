@@ -11,6 +11,7 @@ public class GameManager : MonoBehaviour
     [SerializeField] private GameObject moveCounter;
     bool isLevelFinished;
     bool firstClick;
+    GameObject confetti;
 
     private void OnEnable()
     {
@@ -30,6 +31,8 @@ public class GameManager : MonoBehaviour
     {
         slotPanel.SetActive(false);
         moveCounter.SetActive(false);
+        confetti = GameObject.FindGameObjectWithTag("Confetti");
+        confetti.SetActive(false);
     }
 
     void Update()
@@ -55,7 +58,8 @@ public class GameManager : MonoBehaviour
 
     private void OnSortingTrue()
     {
-        isLevelFinished = true;        
+        isLevelFinished = true;
+        confetti.SetActive(true);
     }
 
 

@@ -13,6 +13,7 @@ TagManager:
   - Obstacle
   - Enemy
   - AttackFX
+  - Confetti
   layers:
   - Default
   - TransparentFX
