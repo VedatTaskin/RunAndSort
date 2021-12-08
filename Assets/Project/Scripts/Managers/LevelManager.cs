@@ -23,6 +23,10 @@ public class LevelManager : MonoBehaviour
 
     public void NextScene()
     {
+        if (currentScene == 0)
+        {
+            currentScene++;
+        }
         SceneManager.LoadScene(currentScene);
     }
 

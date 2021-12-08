@@ -12,6 +12,8 @@ public class UIManager : MonoBehaviour
     public GameObject loseMenu;
     public GameObject gamePlay;
     public GameObject scorePanel;
+    public GameObject scorePanelWin;
+    public GameObject scorePanelLose;
     public Text TutorialText;
     public Text remainingMoveText;
 
@@ -63,7 +65,8 @@ public class UIManager : MonoBehaviour
     {        
         yield return new WaitForSeconds(1);
         TutorialText.transform.parent.gameObject.SetActive(false);
-        winMenu.SetActive(true);        
+        winMenu.SetActive(true);
+        scorePanelWin.transform.GetChild(1).transform.GetComponent<Text>().text = PlayerPrefs.GetInt("Score").ToString();
     }
 
     void LoseMenu()
@@ -78,6 +81,7 @@ public class UIManager : MonoBehaviour
         TutorialText.transform.parent.gameObject.SetActive(false);
         loseMenu.SetActive(true);
         gamePlay.SetActive(false);
+        scorePanelWin.transform.GetChild(1).transform.GetComponent<Text>().text = PlayerPrefs.GetInt("Score").ToString();
     }
 
     void GameStarted()
@@ -129,6 +133,7 @@ public class UIManager : MonoBehaviour
 
     IEnumerator ScoreChangeAnimation()
     {
+        yield return new WaitForSeconds(1f);
         int loopCount = movesRemaining;
         for (int i = 0; i < loopCount; i++)
         {
