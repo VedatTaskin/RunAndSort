@@ -8,18 +8,7 @@ using UnityEngine.UI;
 public class SlotControl : MonoBehaviour
 {
     List<GameObject> ImagesGO = new List<GameObject>();
-    GameObject confetti;
 
-
-    private void OnEnable()
-    {
-        EventManager.onFail += ImagesNotSorted;
-    }
-
-    private void OnDisable()
-    {
-        EventManager.onFail += ImagesNotSorted;
-    }
 
     private void Awake()
     {
@@ -77,18 +66,8 @@ public class SlotControl : MonoBehaviour
     {
         EventManager.sortingIsTrue?.Invoke();
         GetComponent<Image>().color = Color.green; // Change slot color to green
-        StartCoroutine(CloseSlotPanel());
     }
 
-    void ImagesNotSorted()
-    {
-        this.gameObject.SetActive(false);
-    }
-
-    IEnumerator CloseSlotPanel()
-    {
-        yield return new WaitForSeconds(1f);
-        gameObject.SetActive(false);
-    }
-
+    
+        
 }

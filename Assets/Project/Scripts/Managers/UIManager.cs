@@ -14,11 +14,11 @@ public class UIManager : MonoBehaviour
     public GameObject scorePanel;
     public GameObject scorePanelWin;
     public GameObject scorePanelLose;
+    public GameObject slotPanel;
     public Text TutorialText;
     public Text remainingMoveText;
 
     bool isSortingTrue;
-    bool isGameStarted;
     int movesRemaining =5;
     int score = 0;
 
@@ -65,6 +65,7 @@ public class UIManager : MonoBehaviour
     {        
         yield return new WaitForSeconds(1);
         TutorialText.transform.parent.gameObject.SetActive(false);
+        slotPanel.SetActive(false);
         winMenu.SetActive(true);
         scorePanelWin.transform.GetChild(1).transform.GetComponent<Text>().text = PlayerPrefs.GetInt("Score").ToString();
     }
@@ -73,12 +74,14 @@ public class UIManager : MonoBehaviour
     {
         TutorialText.text = "SO BAD";
         StartCoroutine("DisplayLoseMenu");
+        slotPanel.GetComponent<SlotControl>().enabled = false;
     }
 
     IEnumerator DisplayLoseMenu()
     {
         yield return new WaitForSeconds(3);
         TutorialText.transform.parent.gameObject.SetActive(false);
+        slotPanel.SetActive(false);
         loseMenu.SetActive(true);
         gamePlay.SetActive(false);
         scorePanelWin.transform.GetChild(1).transform.GetComponent<Text>().text = PlayerPrefs.GetInt("Score").ToString();
@@ -86,7 +89,6 @@ public class UIManager : MonoBehaviour
 
     void GameStarted()
     {
-        isGameStarted = true;
         TutorialText.text = "WATCH NOW";
     }
 
@@ -121,6 +123,8 @@ public class UIManager : MonoBehaviour
             if (!isSortingTrue)
             {
                 EventManager.onFail?.Invoke();
+                slotPanel.SetActive(false);
+
             }
         }        
     }
@@ -129,6 +133,7 @@ public class UIManager : MonoBehaviour
     {
         isSortingTrue = true;
         TutorialText.text = "EXCELLENT";
+        slotPanel.GetComponent<SlotControl>().enabled = false;
     }
 
     IEnumerator ScoreChangeAnimation()
@@ -149,7 +154,7 @@ public class UIManager : MonoBehaviour
         }
 
         remainingMoveText.transform.parent.gameObject.SetActive(false);
-
+        slotPanel.SetActive(false);
         PlayerPrefs.SetInt("Score", score);
         StartCoroutine("DisplayWinMenu");
     }
