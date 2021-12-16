@@ -8,15 +8,25 @@ using DG.Tweening;
 
 public class UIManager : MonoBehaviour
 {
-    public GameObject winMenu;
-    public GameObject loseMenu;
+    [Header("GamePlay")]
     public GameObject gamePlay;
     public GameObject scorePanel;
-    public GameObject scorePanelWin;
-    public GameObject scorePanelLose;
     public GameObject slotPanel;
-    public Text TutorialText;
     public Text remainingMoveText;
+    public Text tutorialText; 
+    public static Text TutorialText; // we made static only with this method ý can solve the problem that ý don't understand :(
+
+    [Header("WinMenu")]
+    public GameObject winMenu;
+    public Text winScoreText;
+    public GameObject scorePanelWin;
+
+
+    [Header("LoseMenu")]    
+    public Text loseScoreText;
+    public GameObject loseMenu;
+    public GameObject scorePanelLose;
+
 
     bool isSortingTrue;
     int movesRemaining =5;
@@ -42,8 +52,10 @@ public class UIManager : MonoBehaviour
         EventManager.sortingIsTrue += SortingIsTrue;
     }
 
-    private void Awake()
+    
+    private void Start()
     {
+        TutorialText = tutorialText; // we made static only with this method ý can solve the problem that ý don't understand :(
         gamePlay.SetActive(true);
         loseMenu.SetActive(false);
         winMenu.SetActive(false);
@@ -58,37 +70,33 @@ public class UIManager : MonoBehaviour
 
     void WinMenu()
     {
-        StartCoroutine("ScoreChangeAnimation");
+        StartCoroutine("ScoreChangeAnimation");      
     }
 
     IEnumerator DisplayWinMenu()
     {        
         yield return new WaitForSeconds(1);
-        TutorialText.transform.parent.gameObject.SetActive(false);
         slotPanel.SetActive(false);
         winMenu.SetActive(true);
-        scorePanelWin.transform.GetChild(1).transform.GetComponent<Text>().text = PlayerPrefs.GetInt("Score").ToString();
+        winScoreText.text = PlayerPrefs.GetInt("Score").ToString();
     }
 
     void LoseMenu()
     {
-        TutorialText.text = "SO BAD";
         StartCoroutine("DisplayLoseMenu");
-        slotPanel.GetComponent<SlotControl>().enabled = false;
     }
 
     IEnumerator DisplayLoseMenu()
     {
         yield return new WaitForSeconds(3);
-        TutorialText.transform.parent.gameObject.SetActive(false);
         slotPanel.SetActive(false);
         loseMenu.SetActive(true);
         gamePlay.SetActive(false);
-        scorePanelWin.transform.GetChild(1).transform.GetComponent<Text>().text = PlayerPrefs.GetInt("Score").ToString();
+        loseScoreText.text = PlayerPrefs.GetInt("Score").ToString();
     }
 
     void GameStarted()
-    {
+    {        
         TutorialText.text = "WATCH NOW";
     }
 
@@ -133,7 +141,6 @@ public class UIManager : MonoBehaviour
     {
         isSortingTrue = true;
         TutorialText.text = "EXCELLENT";
-        slotPanel.GetComponent<SlotControl>().enabled = false;
     }
 
     IEnumerator ScoreChangeAnimation()

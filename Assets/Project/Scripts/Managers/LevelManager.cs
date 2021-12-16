@@ -32,7 +32,7 @@ public class LevelManager : MonoBehaviour
 
     void ChangeLevelIndex()
     {
-        Animator animator;
+        Animator animator;       
 
         switch (currentScene + 1)
         {

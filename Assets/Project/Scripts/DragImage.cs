@@ -70,6 +70,7 @@ public class DragImage : MonoBehaviour, IBeginDragHandler,IEndDragHandler,IDragH
         this.transform.SetSiblingIndex(placeHolder.transform.GetSiblingIndex());
         placeHolder.SetActive(false);
 
+
         slotTransform.GetComponent<SlotControl>().CheckImagesOrder();
 
         //Update Remainig Moves if we don't put it in same place

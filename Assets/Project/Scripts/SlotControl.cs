@@ -10,7 +10,7 @@ public class SlotControl : MonoBehaviour
     List<GameObject> ImagesGO = new List<GameObject>();
 
 
-    private void Awake()
+    private void Start()
     {
         TakeImageList();
         ShuffleChildImages();
