@@ -3,35 +3,17 @@ using System.Collections.Generic;
 using UnityEngine;
 using DG.Tweening;
 
-public class PlayerControl2 : MonoBehaviour
+public class PlayerControl2 : AbstractPlayerControl
 {
 
     public float speed=10;
     float startSpeed;
-    Animator anim;
-    bool isGameStarted;
-    bool isSortingTrue;
     int obstaclePassed = 0;
     GameObject obstacle;
-    
 
-    private void OnEnable()
+    protected override void Awake()
     {
-        EventManager.gameIsStarted += GameStarted;
-        EventManager.sortingIsTrue += SortingIsTrue;
-        EventManager.onFail += SortingIsFalse;
-    }
-
-    private void OnDisable()
-    {
-        EventManager.gameIsStarted -= GameStarted;
-        EventManager.sortingIsTrue -= SortingIsTrue;
-        EventManager.onFail -= SortingIsFalse;
-    }
-
-    private void Awake()
-    {
-        anim = transform.GetChild(0).GetComponent<Animator>();
+        base.Awake();
         obstacle = GameObject.FindGameObjectWithTag("Obstacle");
         startSpeed = speed;
     }
@@ -46,9 +28,9 @@ public class PlayerControl2 : MonoBehaviour
 
 
     //when game starts we change bool "isGameStarted"
-    void GameStarted()
+    protected override void GameStarted()
     {
-        isGameStarted = true;
+        base.GameStarted();
         anim.SetTrigger("Run");
     }
 
@@ -86,13 +68,12 @@ public class PlayerControl2 : MonoBehaviour
     }
 
     //if sorting is true, we bring obtsacle in front of player; and sets bool "imagesAreSorted" true
-    void SortingIsTrue()
+    protected override void SortingIsTrue()
     {
+        base.SortingIsTrue();
         obstacle.transform.position = new Vector3(obstacle.transform.position.x, obstacle.transform.position.y,
             transform.position.z + 20);
-        speed = startSpeed;
-
-        isSortingTrue = true;
+        speed = startSpeed;        
         anim.SetTrigger("Run");
         StartCoroutine("WinScene");
     }
@@ -107,9 +88,10 @@ public class PlayerControl2 : MonoBehaviour
     }
 
     //if sorting is false, we stop player; 
-    void SortingIsFalse()
+    protected override void SortingIsFalse()
     {
+        base.SortingIsFalse();
         speed = 0;
-        anim.SetTrigger("Lose");
+        
     }
 }

@@ -48,7 +48,7 @@ public class EnemyControl1 : MonoBehaviour
             {
                 enemyState = State.Dance;
                 anim.SetTrigger("Dance");
-                EventManager.enemyIsClose?.Invoke();                
+                EventManager.enemyIsClose?.Invoke();
             }
         }        
     }

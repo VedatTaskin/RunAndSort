@@ -3,52 +3,14 @@ using System.Collections.Generic;
 using UnityEngine;
 using DG.Tweening;
 
-public class PlayerControl1 : MonoBehaviour
-{    
-    Animator anim;
+public class PlayerControl1 : AbstractPlayerControl
+{
+    int cartWheelCount = 0;
 
-
-    private void OnEnable()
+    protected override void GameStarted()
     {
-        EventManager.onFail += SortingIsFalse;
-        EventManager.enemyIsClose += EnemyIsClose;
-        EventManager.winMenu += Win;
+        base.GameStarted();
+        anim.SetTrigger("CartWheel");
     }
-
-    private void OnDisable()
-    {
-        EventManager.onFail -= SortingIsFalse;
-        EventManager.enemyIsClose -= EnemyIsClose;
-        EventManager.winMenu -= Win;
-    }
-
-    private void Awake()
-    {
-        anim = transform.GetChild(0).GetComponent<Animator>();
-    }
-
-    void Win()
-    {
-        anim.SetTrigger("Win");
-    }
-
-    //if sorting is false, we stop player; 
-    void SortingIsFalse()
-    {
-        anim.SetTrigger("Lose");
-    }
-
-    // if enemy is close we play kick animation after 2 seconds
-    void EnemyIsClose()
-    {
-        Invoke("PlayKickAnimation", 2);
-    }
-
-    // if enemy is close we play kick animation after 2 seconds,  we call this from "EnemyIsClose"
-    void PlayKickAnimation()
-    {
-        anim.SetTrigger("Kick");
-    }
-
 
 }
