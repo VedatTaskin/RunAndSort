@@ -5,12 +5,35 @@ using DG.Tweening;
 
 public class PlayerControl1 : AbstractPlayerControl
 {
-    int cartWheelCount = 0;
 
     protected override void GameStarted()
     {
         base.GameStarted();
         anim.SetTrigger("CartWheel");
+        Invoke("OnFirstCartWheelFinished", 2);
     }
+
+    void OnFirstCartWheelFinished()
+    {
+        EventManager.firstObstaclePassed?.Invoke();
+
+    }
+    protected override void SortingIsTrue()
+    {
+        base.SortingIsTrue();
+        anim.SetTrigger("CartWheel");
+        
+        StartCoroutine("WinScene");  
+    }
+
+    IEnumerator WinScene()
+    {
+        Debug.Log("we won");
+        yield return new WaitForSeconds(4f);
+        // we give sometime to begin win animation and scene        
+        anim.SetTrigger("Win");
+        EventManager.winMenu?.Invoke();
+    }
+
 
 }
