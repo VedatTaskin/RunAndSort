@@ -4,35 +4,30 @@ using UnityEngine;
 using DG.Tweening;
 
 public class PlayerControl1 : AbstractPlayerControl
-{
+{   
 
-    protected override void GameStarted()
+    public override void OnEnable()
     {
-        base.GameStarted();
-        anim.SetTrigger("CartWheel");
-        Invoke("OnFirstCartWheelFinished", 2);
+        base.OnEnable();
+        EventManager.enemyIsClose += EnemyIsClose;
     }
 
-    void OnFirstCartWheelFinished()
+    public override void OnDisable()
     {
-        EventManager.firstObstaclePassed?.Invoke();
-
+        base.OnDisable();
+        EventManager.enemyIsClose -= EnemyIsClose;
     }
-    protected override void SortingIsTrue()
+    
+    // if enemy is close we play kick animation after 2 seconds
+    void EnemyIsClose()
     {
-        base.SortingIsTrue();
-        anim.SetTrigger("CartWheel");
-        
-        StartCoroutine("WinScene");  
+        Invoke("PlayKickAnimation", 2);
     }
 
-    IEnumerator WinScene()
+    // if enemy is close we play kick animation after 2 seconds,  we call this from "EnemyIsClose"
+    void PlayKickAnimation()
     {
-        Debug.Log("we won");
-        yield return new WaitForSeconds(4f);
-        // we give sometime to begin win animation and scene        
-        anim.SetTrigger("Win");
-        EventManager.winMenu?.Invoke();
+        anim.SetTrigger("Kick");
     }
 
 
