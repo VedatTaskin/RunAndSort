@@ -5,30 +5,53 @@ using DG.Tweening;
 
 public class PlayerControl1 : AbstractPlayerControl
 {   
+    int jumpCounter=0;
 
     public override void OnEnable()
     {
         base.OnEnable();
-        EventManager.enemyIsClose += EnemyIsClose;
     }
 
     public override void OnDisable()
     {
         base.OnDisable();
-        EventManager.enemyIsClose -= EnemyIsClose;
-    }
-    
-    // if enemy is close we play kick animation after 2 seconds
-    void EnemyIsClose()
-    {
-        Invoke("PlayKickAnimation", 2);
     }
 
-    // if enemy is close we play kick animation after 2 seconds,  we call this from "EnemyIsClose"
-    void PlayKickAnimation()
+
+    protected override void GameStarted()
     {
-        anim.SetTrigger("Kick");
+        base.GameStarted();
+        StartCoroutine(FirstJump());
     }
 
+    IEnumerator FirstJump()
+    {
+        PlayBoxJumpAnimation();
+        yield return new WaitForSeconds(4f);
+        EventManager.firstObstaclePassed?.Invoke();
+    }
+
+    protected override void SortingIsTrue()
+    {
+        base.SortingIsTrue();
+        PlayBoxJumpAnimation();
+    }
+
+    void PlayBoxJumpAnimation()
+    {
+        jumpCounter++;
+        anim.SetTrigger("BoxJump");
+
+        if (jumpCounter==2)
+        {
+            StartCoroutine("WinScene");
+        }
+    }
+
+    IEnumerator WinScene()
+    {
+        yield return new WaitForSeconds(4f);
+        EventManager.winMenu?.Invoke();
+    }
 
 }

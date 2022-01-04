@@ -38,16 +38,22 @@ public class LevelManager : MonoBehaviour
         {
 
             case 1:
+            case 4:
+            case 7:
                 player.AddComponent<PlayerControl1>();
                 animator = player.transform.GetChild(0).GetComponent<Animator>();
                 animator.runtimeAnimatorController = Resources.Load("CharacterAnimator 1") as RuntimeAnimatorController;
                 break;
             case 2:
+            case 5:
+            case 8:
                 player.AddComponent<PlayerControl2>();
                 animator = player.transform.GetChild(0).GetComponent<Animator>();
                 animator.runtimeAnimatorController = Resources.Load("CharacterAnimator 2") as RuntimeAnimatorController;
                 break;
             case 3:
+            case 6:
+            case 9:
                 player.AddComponent<PlayerControl3>();
                 animator = player.transform.GetChild(0).GetComponent<Animator>();
                 animator.runtimeAnimatorController = Resources.Load("CharacterAnimator 3") as RuntimeAnimatorController;

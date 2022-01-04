@@ -36,9 +36,6 @@ public abstract class AbstractPlayerControl : MonoBehaviour
         anim.SetTrigger("Lose");
     }
 
-    /// <summary>
-    /// To play win animation
-    /// </summary>
     protected virtual void Win()
     {
         anim.SetTrigger("Win");

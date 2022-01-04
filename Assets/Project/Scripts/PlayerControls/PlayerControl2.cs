@@ -91,7 +91,6 @@ public class PlayerControl2 : AbstractPlayerControl
     protected override void SortingIsFalse()
     {
         base.SortingIsFalse();
-        speed = 0;
-        
+        speed = 0;        
     }
 }

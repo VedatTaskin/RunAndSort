@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using DG.Tweening;
 
-public class EnemyControl1 : MonoBehaviour
+public class EnemyControl : MonoBehaviour
 {
     bool isGameStarted;
     bool isSortingTrue;
