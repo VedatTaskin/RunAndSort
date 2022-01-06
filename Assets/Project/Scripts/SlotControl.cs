@@ -93,7 +93,7 @@ public class SlotControl : MonoBehaviour
     void ImagesSorted()
     {
         EventManager.sortingIsTrue?.Invoke();
-        GetComponent<Image>().color = Color.green; // Change slot color to green
+        GetComponent<Image>().color = new Color32(0, 255, 225, 100); // Change slot color to green
     }
 
     
