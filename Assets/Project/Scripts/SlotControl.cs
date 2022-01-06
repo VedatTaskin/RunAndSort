@@ -13,7 +13,8 @@ public class SlotControl : MonoBehaviour
     private void Start()
     {
         TakeImageList();
-        ShuffleChildImages();
+        
+        ShuffleChildImages();        
     }
 
     private void ShuffleChildImages()
@@ -22,6 +23,34 @@ public class SlotControl : MonoBehaviour
         {
             int randomIndex =  UnityEngine.Random.Range(i, ImagesGO.Count);
             transform.GetChild(i).SetSiblingIndex(randomIndex);
+        }
+        FirstCheck();
+
+    }
+
+    void FirstCheck()
+    {
+        int index = 1;
+        int correctImagesCount = 0;
+
+        for (int i = 0; i < transform.childCount; i++)
+        {
+            if (transform.GetChild(i).gameObject.activeInHierarchy)
+            {
+
+                if (int.Parse(transform.GetChild(i).name) == index)
+                {
+                    correctImagesCount++;
+                    index++;
+                    if (correctImagesCount == ImagesGO.Count)
+                    {
+                        ShuffleChildImages();
+                        Debug.Log("we shuffled");
+                    }
+                }
+
+            }
+
         }
     }
 
