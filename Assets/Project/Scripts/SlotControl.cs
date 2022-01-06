@@ -24,7 +24,7 @@ public class SlotControl : MonoBehaviour
             int randomIndex =  UnityEngine.Random.Range(i, ImagesGO.Count);
             transform.GetChild(i).SetSiblingIndex(randomIndex);
         }
-        FirstCheck();
+        FirstCheck(); // we will ensure about the images are not sorted
 
     }
 
@@ -45,7 +45,6 @@ public class SlotControl : MonoBehaviour
                     if (correctImagesCount == ImagesGO.Count)
                     {
                         ShuffleChildImages();
-                        Debug.Log("we shuffled");
                     }
                 }
 

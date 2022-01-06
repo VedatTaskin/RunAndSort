@@ -74,8 +74,9 @@ public class UIManager : MonoBehaviour
     }
 
     IEnumerator DisplayWinMenu()
-    {        
-        yield return new WaitForSeconds(1);
+    {
+        tutorialText.gameObject.SetActive(false);
+        yield return new WaitForSeconds(0.5f);
         slotPanel.SetActive(false);
         winMenu.SetActive(true);
         winScoreText.text = PlayerPrefs.GetInt("Score").ToString();
@@ -88,6 +89,7 @@ public class UIManager : MonoBehaviour
 
     IEnumerator DisplayLoseMenu()
     {
+        tutorialText.gameObject.SetActive(false);
         yield return new WaitForSeconds(3);
         slotPanel.SetActive(false);
         loseMenu.SetActive(true);
@@ -109,7 +111,10 @@ public class UIManager : MonoBehaviour
     IEnumerator BeginSortingRoutine()
     {        
         yield return new WaitForSeconds(2f);
-        TutorialText.text = "SORT THE PICTURES";
+        if (!isSortingTrue) // to ensure: player can sort very fast 
+        {
+            TutorialText.text = "SORT THE PICTURES";
+        }
     }
 
     public void ExitButton()
