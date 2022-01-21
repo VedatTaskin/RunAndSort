@@ -13,7 +13,8 @@ public class UIManager : MonoBehaviour
     public GameObject scorePanel;
     public GameObject slotPanel;
     public Text remainingMoveText;
-    public Text tutorialText; 
+    public Text tutorialText;
+    public Text bonusText;
     public static Text TutorialText; // we made static only with this method ý can solve the problem that ý don't understand :(
 
     [Header("WinMenu")]
@@ -59,6 +60,7 @@ public class UIManager : MonoBehaviour
         gamePlay.SetActive(true);
         loseMenu.SetActive(false);
         winMenu.SetActive(false);
+        bonusText.gameObject.SetActive(false);
         remainingMoveText.text = movesRemaining.ToString();
 
         if (PlayerPrefs.HasKey("Score"))
@@ -154,15 +156,26 @@ public class UIManager : MonoBehaviour
         int loopCount = movesRemaining;
         for (int i = 0; i < loopCount; i++)
         {
+            bonusText.gameObject.SetActive(true);
+
             remainingMoveText.transform.DOShakeScale(0.5f, 1, 10, 90);
             scorePanel.transform.GetChild(0).transform.DOShakeScale(0.5f, 1, 10, 90);
             scorePanel.transform.GetChild(1).transform.GetComponent<Text>().gameObject.transform.DOShakeScale(0.5f, 1, 10, 90);
+                        
+            if (movesRemaining>0)
+            {
+                score += 100 * movesRemaining;
+                bonusText.text ="+" + (movesRemaining * 100).ToString();
+            }
 
             movesRemaining--;
-            score += 100;
+
             remainingMoveText.text = movesRemaining.ToString();
             scorePanel.transform.GetChild(1).transform.GetComponent<Text>().text = score.ToString();
             yield return new WaitForSeconds(0.6f);
+
+
+            bonusText.gameObject.SetActive(false);
         }
 
         remainingMoveText.transform.parent.gameObject.SetActive(false);
